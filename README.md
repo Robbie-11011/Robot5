@@ -168,6 +168,7 @@ Commands DEVMODE '
                 add #
                 set #
             }
+        }
     }
     toggledevmode
 }
