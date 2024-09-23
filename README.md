@@ -98,8 +98,9 @@ Right Mouse Click
     Use Ability 2 (heal)
 }
 
-Commands DEVMODE {
-    Example:
+Commands DEVMODE '
+{
+    EXAMPLES:
     set player mana value 750
     set player ego res force 100
     set player a1 power 10
@@ -171,7 +172,8 @@ Commands DEVMODE {
     toggledevmode
 }
 
-Commands NOT DEVMODE {
+Commands NOT DEVMODE 
+{
     set
     {
         player
