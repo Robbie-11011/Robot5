@@ -155,13 +155,11 @@ public class UIManager : MonoBehaviour
 		if (cycleUp && CmdIndex < PreviousCommands.Count - 1)
 		{
 			CmdIndex++;
-			Debug.Log($"{CmdIndex}/{PreviousCommands.Count - 1}");
 		}
 
 		if (cycleDown && CmdIndex > 0)
 		{
 			CmdIndex--;
-			Debug.Log($"{CmdIndex}/{PreviousCommands.Count - 1}");
 		}
 
 		if (cycleUp || cycleDown)
@@ -271,26 +269,34 @@ public class UIManager : MonoBehaviour
 								switch (Words[2])
 								{
 									case "mana":
-										SetStat(ref TargetStats.Mana);
-										Output.Text = $"[ MANA UPDATED ]";
-										Output.TextColor = Color.green;
+										if (SetStat(ref TargetStats.Mana))
+										{
+											Output.Text = $"[ MANA UPDATED ]";
+											Output.TextColor = Color.green;
+										}
 										break;
 									case "hp":
-										SetStat(ref TargetStats.Hp);
-										Output.Text = $"[ HP UPDATED ]";
-										Output.TextColor = Color.green;
+										if (SetStat(ref TargetStats.Hp))
+										{
+											Output.Text = $"[ HP UPDATED ]";
+											Output.TextColor = Color.green;
+										}
 										break;
 									case "a1":
-										SetAbility(ref TargetManager.Ability1.Stats);
-										TargetManager.UpdateCost();
-										Output.Text = $"[ ABILITY 1 UPDATED ]";
-										Output.TextColor = Color.green;
+										if (SetAbility(ref TargetManager.Ability1.Stats))
+										{
+											Output.Text = $"[ ABILITY 1 UPDATED ]";
+											Output.TextColor = Color.green;
+											TargetManager.UpdateCost();
+										}
 										break;
 									case "a2":
-										SetAbility(ref TargetManager.Ability2.Stats);
-										TargetManager.UpdateCost();
-										Output.Text = $"[ ABILITY 2 UPDATED ]";
-										Output.TextColor = Color.green;
+										if (SetAbility(ref TargetManager.Ability2.Stats))
+										{
+											Output.Text = $"[ ABILITY 2 UPDATED ]";
+											Output.TextColor = Color.green;
+											TargetManager.UpdateCost();
+										}
 										break;
 									case "ego":
 										if (Words.Length < 4)
@@ -302,23 +308,50 @@ public class UIManager : MonoBehaviour
 										switch (Words[3])
 										{
 											case "res":
-												SetDamageTypes(ref TargetEgo.Resistances);
-												Output.Text = $"[ EGO RESISTANCES UPDATED ]";
-												Output.TextColor = Color.green;
+												if (SetDamageTypes(ref TargetEgo.Resistances))
+												{
+													Output.Text = $"[ EGO RESISTANCES UPDATED ]";
+													Output.TextColor = Color.green;
+												}
 												break;
 											case "cnt":
-												SetDamageTypes(ref TargetEgo.Damage_Counters);
-												Output.Text = $"[ EGO COUNTER UPDATED ]";
-												Output.TextColor = Color.green;
+												if (SetDamageTypes(ref TargetEgo.Damage_Counters))
+												{
+													Output.Text = $"[ EGO COUNTER UPDATED ]";
+													Output.TextColor = Color.green;
+												}
 												break;
 											case "new":
 												TargetEgo = new Ego(0, 500);
 												TargetEgo.Initialize();
-												TargetEgos.AddEgo(TargetEgo);
-												Output.Text = $"[ EGO ADDED ]";
-												Output.TextColor = Color.green;
+												if (TargetEgos.AddEgo(TargetEgo))
+												{
+													Output.Text = $"[ EGO ADDED ]";
+													Output.TextColor = Color.green;
+												}
+												else
+												{
+													Output.Text = $"[ COULD NOT ADD EGO ]";
+													Output.TextColor = Color.red;
+												}
 												break;
 											case "max":
+
+												if (Words.Length < 5)
+												{
+													Output.Text = $"[ EXPECTED INT VALUE AT THE END ]";
+													Output.TextColor = Color.red;
+													break;
+												}
+
+												int mod = (int)GetInputFloat(4);
+
+												if (mod <= TargetEgos.Size.Max)
+												{
+													Output.Text = $"[ EGO MAX CANNOT BE LESS THAN CURRENT ]";
+													Output.TextColor = Color.red;
+													break;
+												}
 												TargetEgos.Size.Max = GetInputFloat(4);
 												Output.Text = $"[ EGO SIZE UPDATED ]";
 												Output.TextColor = Color.green;
@@ -421,7 +454,6 @@ public class UIManager : MonoBehaviour
 										TargetManager.UpdateCost();
 										break;
 									case "a2":
-										;
 										if (SetAbility(ref TargetManager.Ability2.Stats))
 										{
 											Output.Text = $"[ ABILITY 2 UPDATED ]";
@@ -464,7 +496,8 @@ public class UIManager : MonoBehaviour
 						break;
 				}
 			}
-		} else
+		}
+		else
 		{
 			Output.Text = "[ TRY ]\n - set\n - toggledevmode";
 			Output.TextColor = Color.cyan;
@@ -516,9 +549,20 @@ public class UIManager : MonoBehaviour
 	{
 		float mod = 0;
 
+		if (Words.Length < 4)
+		{
+			UnknownCmdError();
+			return false;
+		}
+
 		if (Words.Length == 5)
 		{
 			mod = GetInputFloat(4);
+		}
+		else
+		{
+			UnknownCmdError();
+			return false;
 		}
 
 		if (!Util.InRange(0, mod, stat.Max) && Words[3] == "value")
@@ -558,9 +602,20 @@ public class UIManager : MonoBehaviour
 	{
 		float mod = 0;
 
+		if (Words.Length < 4)
+		{
+			UnknownCmdError();
+			return false;
+		}
+
 		if (Words.Length == 5)
 		{
 			mod = GetInputFloat(4);
+		}
+		else
+		{
+			UnknownCmdError();
+			return false;
 		}
 
 		switch (Words[3])
@@ -601,9 +656,20 @@ public class UIManager : MonoBehaviour
 	{
 		float mod = 0;
 
+		if (Words.Length < 5)
+		{
+			UnknownCmdError();
+			return false;
+		}
+
 		if (Words.Length == 6)
 		{
 			mod = GetInputFloat(5);
+		}
+		else
+		{
+			UnknownCmdError();
+			return false;
 		}
 
 		if (!Util.InRange(types.Bounds.Min, mod, types.Bounds.Max))
