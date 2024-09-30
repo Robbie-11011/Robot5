@@ -1,5 +1,5 @@
 // Robert Laidley
-// September 23rd, 2024
+// September 30th, 2024
 
 Welcome to Robot5 (pronounced Robots)!
 
@@ -80,6 +80,11 @@ Escape
     Closes Game
 }
 
+Backspace
+{
+    Restarts Scene
+}
+
 Movement 
 {
     A = Left
@@ -98,12 +103,9 @@ Right Mouse Click
     Use Ability 2 (heal)
 }
 
-Commands 
---------------------------------
-
-DEVMODE '
+Commands DEVMODE 
 {
-    EXAMPLES:
+    Example:
     set player mana value 750
     set player ego res force 100
     set player a1 power 10
@@ -176,7 +178,7 @@ DEVMODE '
     toggledevmode
 }
 
-NON-DEVMODE 
+Commands NOT DEVMODE 
 {
     set
     {
