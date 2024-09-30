@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// A manager object for the UI for the menu and terminal
@@ -33,6 +34,11 @@ public class UIManager : MonoBehaviour
 	public KeyCode Key_EndGame;
 
 	/// <summary>
+	/// The key code for restarting the scene
+	/// </summary>
+	public KeyCode Key_RestartScene;
+
+	/// <summary>
 	/// The key code for executing a command
 	/// </summary>
 	public KeyCode Key_ExecuteCommand;
@@ -46,6 +52,11 @@ public class UIManager : MonoBehaviour
 	/// The bool for the end the game button being pressed
 	/// </summary>
 	private bool EndGamePressed;
+
+	/// <summary>
+	/// The bool for restarting the scene
+	/// </summary>
+	private bool RestartScenePressed;
 
 	/// <summary>
 	/// The bool for the executing a command button being pressed
@@ -147,6 +158,7 @@ public class UIManager : MonoBehaviour
 	{
 		ToggleMenuPressed = Input.GetKeyDown(Key_ToggleMenu);
 		EndGamePressed = Input.GetKeyDown(Key_EndGame);
+		RestartScenePressed = Input.GetKeyDown(Key_RestartScene);
 		ExecuteCommandPressed = Input.GetKeyDown(Key_ExecuteCommand);
 
 		bool cycleUp = Input.GetKeyDown(Key_CycleUp);
@@ -184,6 +196,11 @@ public class UIManager : MonoBehaviour
 #if UNITY_EDITOR
 			UnityEditor.EditorApplication.isPlaying = false;
 #endif
+		}
+
+		if (RestartScenePressed)
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 
 		if (ExecuteCommandPressed && IsActive)
