@@ -140,6 +140,11 @@ public class Player_Manager : MonoBehaviour
 	public Vector3 Direction;
 
 	/// <summary>
+	/// A canvas with the UI text for a game over message
+	/// </summary>
+	public Canvas GameOverCanvas;
+
+	/// <summary>
 	/// Once at the very beginning
 	/// </summary>
 	private void Awake()
@@ -211,6 +216,13 @@ public class Player_Manager : MonoBehaviour
 			Direction.Normalize();
 
 			
+		}
+
+		// Handles death screen
+		if (stats.Dead)
+		{
+			Time.timeScale = 0;
+			GameOverCanvas.gameObject.SetActive(true);
 		}
 
 		Scroll = Input.mouseScrollDelta;
