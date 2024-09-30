@@ -35,6 +35,11 @@ public class DisplayPlayerEgo : MonoBehaviour
 	private TextMeshProUGUI StatsText;
 
 	/// <summary>
+	/// A toggle for the resistances and damage counters to be shown
+	/// </summary>
+	public bool Expanded;
+
+	/// <summary>
 	/// Once at the very beginning
 	/// </summary>
 	private void Awake()
@@ -45,7 +50,7 @@ public class DisplayPlayerEgo : MonoBehaviour
 		PlayerManager = player.GetComponent<Player_Manager>();
 		PlayerStats = player.GetComponent<Stats>();
 		PlayerEgos = player.GetComponent<Egos>();
-		
+
 	}
 
 	/// <summary>
@@ -68,5 +73,32 @@ public class DisplayPlayerEgo : MonoBehaviour
 		StatsText.text =
 			$"Ego: {PlayerManager.Ego_Index + 1} / {PlayerEgos.Size.Value}\n" +
 			$"Ego Limit: {PlayerEgos.Size.Max}\n\n";
+
+		// Check if the res and cnt lists should be shown
+		if (Expanded)
+		{
+
+			// Res header
+			StatsText.text += $"[ RESISTANCES ]\n\n";
+
+			// Display resistances
+			for (int i = 0; i < 8; i++)
+			{
+				Element type = PlayerEgos.EgoList[PlayerManager.Ego_Index].Resistances.Types[i];
+
+				StatsText.text += $"{type.Type}: {type.Power}\n";
+			}
+
+			// Cnt header
+			StatsText.text += $"\n[ DAMAGE COUNTERS ]\n\n";
+
+			// Display damage counters
+			for (int i = 0; i < 8; i++)
+			{
+				Element type = PlayerEgos.EgoList[PlayerManager.Ego_Index].Damage_Counters.Types[i];
+
+				StatsText.text += $"{type.Type}: {type.Power}\n";
+			}
+		}
 	}
 }
